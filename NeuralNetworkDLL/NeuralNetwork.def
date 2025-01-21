@@ -1,0 +1,9 @@
+LIBRARY NeuralNetwork
+EXPORTS
+    NeuralNetwork@12             ; Constructor (int, int, int)
+    ~NeuralNetwork@0             ; Destructor
+    Predict@4                    ; std::vector<double> Predict(const std::vector<double>&)
+    Train@20                     ; void Train(const std::vector<double>&, const std::vector<double>&, double, int)
+    PrintNetwork@0               ; void PrintNetwork()
+    SaveModel@4                  ; void SaveModel(const std::string&)
+    LoadModel@4                  ; void LoadModel(const std::string&)

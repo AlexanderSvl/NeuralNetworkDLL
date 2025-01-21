@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "6b229c56-20bc-40c0-b452-60167a751463": {
+      "ProjectGuid": "6b229c56-20bc-40c0-b452-60167a751463",
+      "DisplayName": "NeuralNetworkDLL",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
