@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef NEURAL_NETWORK_H
-#define NEUTRAL_NETWORK_H
+#define NEURAL_NETWORK_H
 
 #include <vector>
 #include <string>
@@ -43,10 +43,34 @@ private:
 		const std::vector<double>& targed_output);
 
 	// Applies the activation function (e.g., Sigmoid, ReLU) to a given value x.
-	void Activation(double x);
-
+	double Activation(double x) const;
 	// Computes the derivative of the activation function for backpropagation.
-	void ActivationDerivative(double x);
+	double ActivationDerivative(double x) const;
+
+	// Layer sizes
+	int inputSize;
+	int hiddenSize;
+	int outputSize;
+
+	// Weights and biases
+	std::vector<std::vector<double>> weightsInputHidden;	// Weights from input to hidden
+	std::vector<std::vector<double>> weightsHiddenOutput;	// Weights from hidden to output
+	std::vector<double> biasesHidden;						// Biases for hidden layer
+	std::vector<double> biasesOutput;						// Biases for output layer
+
+	// Neuron values (activations)
+	std::vector<double> inputLayer;							// Input layer activations
+	std::vector<double> hiddenLayer;						// Hidden layer activations
+	std::vector<double> outputLayer;						// Output layer activations
+
+	// Gradients for backpropagation
+	std::vector<std::vector<double>> gradientsInputHidden;  // Gradients for input-hidden weights
+	std::vector<std::vector<double>> gradientsHiddenOutput; // Gradients for hidden-output weights
+	std::vector<double> gradientsBiasesHidden;              // Gradients for hidden biases
+	std::vector<double> gradientsBiasesOutput;              // Gradients for output biases
+
+	// Training parameter
+	double learningRate;									// Learning rate for gradient descent
 };
 
-#endif // NEUTRAL_NETWORK_H
+#endif // NEURAL_NETWORK_H
