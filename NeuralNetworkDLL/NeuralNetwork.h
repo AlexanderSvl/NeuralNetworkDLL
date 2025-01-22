@@ -3,9 +3,6 @@
 #ifndef NEURAL_NETWORK_H
 #define NEURAL_NETWORK_H
 
-#include <vector>
-#include <string>
-
 class NeuralNetwork
 {
 public:
@@ -40,7 +37,7 @@ private:
 
 	// Error calculation between predicted output and target output. 
 	double CalculateLoss(const std::vector<double>& predicted_output,
-		const std::vector<double>& targed_output);
+		const std::vector<double>& target_output);
 
 	// Applies the activation function (e.g., Sigmoid, ReLU) to a given value x.
 	double Activation(double x) const;
