@@ -68,3 +68,48 @@ void NeuralNetwork::InitializeWeights()
         biasesOutput[i] = 0.1;
     }
 }
+
+std::vector<double> NeuralNetwork::Forward(const std::vector<double>& input)
+{
+    // Step 1: Calculate the activations for the hidden layer
+    for (size_t i = 0; i < hiddenSize; ++i)
+    {
+        double sum = 0.0;
+
+        // Calculate the weighted sum for each hidden neuron
+        for (size_t j = 0; j < inputSize; ++j)
+        {
+            sum += input[j] * weightsInputHidden[i][j]; // Input multiplied by weights
+        }
+
+        sum += biasesHidden[i];             // Add bias for the hidden neuron
+        hiddenLayer[i] = Activation(sum);   // Apply activation function (sigmoid)
+    }
+
+    // Step 2: Calculate the activations for the output layer
+    for (size_t i = 0; i < outputSize; ++i)
+    {
+        double sum = 0.0;
+
+        // Calculate the weighted sum for each output neuron
+        for (size_t j = 0; j < hiddenSize; ++j)
+        {
+            sum += hiddenLayer[j] * weightsHiddenOutput[i][j]; // Hidden layer output multiplied by weights
+        }
+
+        sum += biasesOutput[i];             // Add bias for the output neuron
+        outputLayer[i] = Activation(sum);   // Apply activation function (sigmoid)
+    }
+
+    return outputLayer;
+}
+    
+double NeuralNetwork::Activation(double x) const
+{
+    return 1 / (1 + std::exp(-x));
+}
+
+double NeuralNetwork::ActivationDerivative(double sigmoidOutput) const
+{
+    return sigmoidOutput * (1 - sigmoidOutput);
+}
