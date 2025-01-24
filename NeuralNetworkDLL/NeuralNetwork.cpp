@@ -103,6 +103,78 @@ std::vector<double> NeuralNetwork::Forward(const std::vector<double>& input)
 
     return outputLayer;
 }
+
+void NeuralNetwork::Backward(const std::vector<double>& target)
+{
+    std::vector<double> output_layer_error = std::vector<double>(outputSize);
+
+    // Calculation of outpu layer error
+    for (size_t i = 0; i < outputSize; i++)
+    {
+        output_layer_error[i] = outputLayer[i] - target[i];
+    }
+
+    std::vector<double> hidden_layer_error = std::vector<double>(hiddenSize);
+
+    // Calculation of hidden layer error
+    for (size_t i = 0; i < hiddenSize; ++i)
+    {
+        double error = 0.0;
+
+        // Calculate error for hidden neuron i
+        for (size_t j = 0; j < outputSize; ++j)
+        {
+            error += output_layer_error[j] * weightsHiddenOutput[j][i];
+        }
+
+        // Apply the derivative of the activation function for hidden layer
+        hidden_layer_error[i] = error * ActivationDerivative(hiddenLayer[i]);
+    }
+
+    // Calculation of the gradients
+    for (size_t i = 0; i < outputSize; ++i)
+    {
+        for (size_t j = 0; j < hiddenSize; ++j)
+        {
+            gradientsHiddenOutput[i][j] = output_layer_error[i] * hiddenLayer[j];
+        }
+    }
+
+    // Calculation of the gradients
+    for (size_t i = 0; i < inputSize; ++i)
+    {
+        for (size_t j = 0; j < hiddenSize; ++j)
+        {
+            gradientsInputHidden[i][j] = hidden_layer_error[j] * inputLayer[i];
+        }
+    }
+
+    // Calculation of the gradients
+    for (size_t i = 0; i < outputSize; ++i)
+    {
+        gradientsBiasesOutput[i] = output_layer_error[i];
+    }
+
+    // Calculation of the gradients
+    for (size_t i = 0; i < hiddenSize; ++i)
+    {
+        gradientsBiasesHidden[i] = hidden_layer_error[i];
+    }
+}
+
+double NeuralNetwork::CalculateLoss(const std::vector<double>& predicted_output, const std::vector<double>& target_output)
+{
+    double total_loss = 0.0;
+
+    for (size_t i = 0; i < predicted_output.size(); i++)
+    {
+        total_loss += std::pow((predicted_output[i] - target_output[i]), 2);
+    }
+
+    total_loss /= static_cast<double>(predicted_output.size());
+
+    return total_loss;
+}
     
 double NeuralNetwork::Activation(double x) const
 {
