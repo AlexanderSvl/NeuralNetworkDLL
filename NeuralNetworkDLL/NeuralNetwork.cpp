@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "NeuralNetwork.h"
+#include <iostream>
 
 NeuralNetwork::NeuralNetwork(int input_layer_size, int hidden_layer_size, int output_layer_size)
 	: inputSize(input_layer_size),
@@ -24,6 +25,85 @@ NeuralNetwork::NeuralNetwork(int input_layer_size, int hidden_layer_size, int ou
 	gradientsHiddenOutput.resize(outputSize, std::vector<double>(hiddenSize));
 	gradientsBiasesHidden.resize(hiddenSize);
 	gradientsBiasesOutput.resize(outputSize);
+}
+
+NeuralNetwork::~NeuralNetwork()
+{
+}
+
+std::vector<double> NeuralNetwork::Predict(const std::vector<double>& input)
+{
+    return Forward(input);
+}
+
+void NeuralNetwork::Train(const std::vector<std::vector<double>>& inputs,
+                          const std::vector<std::vector<double>>& targets,
+                          double learning_rate,
+                          int epochs)
+{
+    // Initialize the weights and biases randomly
+    InitializeWeights();
+
+    // Set the learning rate
+    learningRate = learning_rate;
+
+    // Iterate through epochs (iterations of training)
+    for (int epoch = 0; epoch < epochs; ++epoch)
+    {
+        double total_loss = 0.0;
+
+        // Loop through each training example
+        for (size_t i = 0; i < inputs.size(); ++i)
+        {
+            // Get the input and target for the current example
+            const std::vector<double>& input = inputs[i];
+            const std::vector<double>& target = targets[i];
+
+            // Perform the forward pass
+            outputLayer = Forward(input);
+
+            // Calculate the loss for the current example
+            total_loss += CalculateLoss(outputLayer, target);
+
+            // Perform the backward pass to calculate gradients
+            Backward(target);
+
+            // Update weights and biases using the gradients and learning rate
+            // Update weights from input to hidden
+            for (size_t j = 0; j < hiddenSize; ++j)
+            {
+                for (size_t k = 0; k < inputSize; ++k)
+                {
+                    weightsInputHidden[j][k] -= learningRate * gradientsInputHidden[j][k];
+                }
+            }
+
+            // Update weights from hidden to output
+            for (size_t j = 0; j < outputSize; ++j)
+            {
+                for (size_t k = 0; k < hiddenSize; ++k)
+                {
+                    weightsHiddenOutput[j][k] -= learningRate * gradientsHiddenOutput[j][k];
+                }
+            }
+
+            // Update biases for hidden layer
+            for (size_t j = 0; j < hiddenSize; ++j)
+            {
+                biasesHidden[j] -= learningRate * gradientsBiasesHidden[j];
+            }
+
+            // Update biases for output layer
+            for (size_t j = 0; j < outputSize; ++j)
+            {
+                biasesOutput[j] -= learningRate * gradientsBiasesOutput[j];
+            }
+        }
+
+        // Print the loss for the current epoch (optional)
+        total_loss /= inputs.size();
+        std::cout << "Epoch " << epoch + 1 << "/" << epochs << " - Loss: " << total_loss << std::endl;
+    }
 }
 
 void NeuralNetwork::InitializeWeights()
@@ -166,12 +246,12 @@ double NeuralNetwork::CalculateLoss(const std::vector<double>& predicted_output,
 {
     double total_loss = 0.0;
 
-    for (size_t i = 0; i < predicted_output.size(); i++)
+    for (size_t i = 0; i < outputSize; i++)
     {
         total_loss += std::pow((predicted_output[i] - target_output[i]), 2);
     }
 
-    total_loss /= static_cast<double>(predicted_output.size());
+    total_loss /= static_cast<double>(outputSize);
 
     return total_loss;
 }

@@ -15,10 +15,10 @@ public:
 	std::vector<double> Predict(const std::vector<double>& input);
 
 	// Training function for the neural network.
-	void Train(const std::vector<double>& inputs,
-		const std::vector<double>& targets,
-		double learning_rate,
-		int epochs);
+	void Train(const std::vector<std::vector<double>>& inputs,
+			   const std::vector<std::vector<double>>& targets,
+			   double learning_rate,
+			   int epochs);
 
 	// Utility functions
 	void PrintNetwork();
