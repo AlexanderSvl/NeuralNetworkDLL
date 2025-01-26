@@ -1,5 +1,7 @@
 #pragma once
 
+#include "pch.h"
+
 #ifdef NEURALNETWORK_EXPORTS
 #define NEURALNETWORK_API __declspec(dllexport)
 #else
