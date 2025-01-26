@@ -1,75 +1,64 @@
 #include "pch.h"
 #include "NeuralNetwork.h"
-#include <iostream>
 
-NeuralNetwork::NeuralNetwork(int input_layer_size, int hidden_layer_size, int output_layer_size)
-	: inputSize(input_layer_size),
-	  hiddenSize(hidden_layer_size),
-	  outputSize(output_layer_size)
+// Constructor: Allocate memory for weights, biases, and neuron activations
+NeuralNetwork::NeuralNetwork(int input_layer_size, int hidden_layer_size, int output_layer_size, double learning_rate)
+    : inputSize(input_layer_size),
+    hiddenSize(hidden_layer_size),
+    outputSize(output_layer_size),
+    learningRate(learning_rate)
 {
-	// Memory allocation for the weight matrices
-	weightsInputHidden.resize(hiddenSize, std::vector<double>(inputSize));
-	weightsHiddenOutput.resize(outputSize, std::vector<double>(hiddenSize));
+    // Initialize weights and biases
+    weightsInputHidden.resize(hiddenSize, std::vector<double>(inputSize));
+    weightsHiddenOutput.resize(outputSize, std::vector<double>(hiddenSize));
+    biasesHidden.resize(hiddenSize);
+    biasesOutput.resize(outputSize);
 
-	// Memory allocation for the biases
-	biasesHidden.resize(hiddenSize);
-	biasesOutput.resize(outputSize);
+    // Initialize neuron layers
+    inputLayer.resize(inputSize);
+    hiddenLayer.resize(hiddenSize);
+    outputLayer.resize(outputSize);
 
-	// Memory allocation for neurons	
-	inputLayer.resize(inputSize);
-	hiddenLayer.resize(hiddenSize);
-	outputLayer.resize(outputSize);
-
-	// Memory allocation for gradients (used during training)
-	gradientsInputHidden.resize(hiddenSize, std::vector<double>(inputSize));
-	gradientsHiddenOutput.resize(outputSize, std::vector<double>(hiddenSize));
-	gradientsBiasesHidden.resize(hiddenSize);
-	gradientsBiasesOutput.resize(outputSize);
+    // Initialize gradients
+    gradientsInputHidden.resize(hiddenSize, std::vector<double>(inputSize));
+    gradientsHiddenOutput.resize(outputSize, std::vector<double>(hiddenSize));
+    gradientsBiasesHidden.resize(hiddenSize);
+    gradientsBiasesOutput.resize(outputSize);
 }
 
-NeuralNetwork::~NeuralNetwork()
-{
-}
+// Destructor
+NeuralNetwork::~NeuralNetwork() {}
 
+// Predict function
 std::vector<double> NeuralNetwork::Predict(const std::vector<double>& input)
 {
     return Forward(input);
 }
 
+// Train the neural network
 void NeuralNetwork::Train(const std::vector<std::vector<double>>& inputs,
-                          const std::vector<std::vector<double>>& targets,
-                          double learning_rate,
-                          int epochs)
+    const std::vector<std::vector<double>>& targets,
+    double learning_rate,
+    int epochs)
 {
-    // Initialize the weights and biases randomly
     InitializeWeights();
-
-    // Set the learning rate
     learningRate = learning_rate;
 
-    // Iterate through epochs (iterations of training)
     for (int epoch = 0; epoch < epochs; ++epoch)
     {
         double total_loss = 0.0;
 
-        // Loop through each training example
         for (size_t i = 0; i < inputs.size(); ++i)
         {
-            // Get the input and target for the current example
             const std::vector<double>& input = inputs[i];
             const std::vector<double>& target = targets[i];
 
-            // Perform the forward pass
             outputLayer = Forward(input);
-
-            // Calculate the loss for the current example
             total_loss += CalculateLoss(outputLayer, target);
 
-            // Perform the backward pass to calculate gradients
             Backward(target);
 
-            // Update weights and biases using the gradients and learning rate
-            // Update weights from input to hidden
+            // Update weights and biases
             for (size_t j = 0; j < hiddenSize; ++j)
             {
                 for (size_t k = 0; k < inputSize; ++k)
@@ -78,7 +67,6 @@ void NeuralNetwork::Train(const std::vector<std::vector<double>>& inputs,
                 }
             }
 
-            // Update weights from hidden to output
             for (size_t j = 0; j < outputSize; ++j)
             {
                 for (size_t k = 0; k < hiddenSize; ++k)
@@ -87,39 +75,34 @@ void NeuralNetwork::Train(const std::vector<std::vector<double>>& inputs,
                 }
             }
 
-            // Update biases for hidden layer
             for (size_t j = 0; j < hiddenSize; ++j)
             {
                 biasesHidden[j] -= learningRate * gradientsBiasesHidden[j];
             }
 
-            // Update biases for output layer
             for (size_t j = 0; j < outputSize; ++j)
             {
                 biasesOutput[j] -= learningRate * gradientsBiasesOutput[j];
             }
         }
 
-        // Print the loss for the current epoch (optional)
         total_loss /= inputs.size();
         std::cout << "Epoch " << epoch + 1 << "/" << epochs << " - Loss: " << total_loss << std::endl;
     }
 }
 
+// Initialize weights using Xavier initialization
 void NeuralNetwork::InitializeWeights()
 {
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    // Xavier initialization bounds for input-hidden weights
     double boundInputHidden = sqrt(6.0 / (inputSize + hiddenSize));
     std::uniform_real_distribution<double> distInputHidden(-boundInputHidden, boundInputHidden);
 
-    // Xavier initialization bounds for hidden-output weights
     double boundHiddenOutput = sqrt(6.0 / (hiddenSize + outputSize));
     std::uniform_real_distribution<double> distHiddenOutput(-boundHiddenOutput, boundHiddenOutput);
 
-    // Initialize weightsInputHidden
     for (size_t i = 0; i < hiddenSize; ++i)
     {
         for (size_t j = 0; j < inputSize; ++j)
@@ -128,7 +111,6 @@ void NeuralNetwork::InitializeWeights()
         }
     }
 
-    // Initialize weightsHiddenOutput
     for (size_t i = 0; i < outputSize; ++i)
     {
         for (size_t j = 0; j < hiddenSize; ++j)
@@ -137,7 +119,6 @@ void NeuralNetwork::InitializeWeights()
         }
     }
 
-    // Initialize biases with a small constant (0.1)
     for (size_t i = 0; i < hiddenSize; ++i)
     {
         biasesHidden[i] = 0.1;
@@ -149,69 +130,56 @@ void NeuralNetwork::InitializeWeights()
     }
 }
 
+// Forward pass
 std::vector<double> NeuralNetwork::Forward(const std::vector<double>& input)
 {
-    // Step 1: Calculate the activations for the hidden layer
     for (size_t i = 0; i < hiddenSize; ++i)
     {
         double sum = 0.0;
-
-        // Calculate the weighted sum for each hidden neuron
         for (size_t j = 0; j < inputSize; ++j)
         {
-            sum += input[j] * weightsInputHidden[i][j]; // Input multiplied by weights
+            sum += input[j] * weightsInputHidden[i][j];
         }
-
-        sum += biasesHidden[i];             // Add bias for the hidden neuron
-        hiddenLayer[i] = Activation(sum);   // Apply activation function (sigmoid)
+        sum += biasesHidden[i];
+        hiddenLayer[i] = Activation(sum);
     }
 
-    // Step 2: Calculate the activations for the output layer
     for (size_t i = 0; i < outputSize; ++i)
     {
         double sum = 0.0;
-
-        // Calculate the weighted sum for each output neuron
         for (size_t j = 0; j < hiddenSize; ++j)
         {
-            sum += hiddenLayer[j] * weightsHiddenOutput[i][j]; // Hidden layer output multiplied by weights
+            sum += hiddenLayer[j] * weightsHiddenOutput[i][j];
         }
-
-        sum += biasesOutput[i];             // Add bias for the output neuron
-        outputLayer[i] = Activation(sum);   // Apply activation function (sigmoid)
+        sum += biasesOutput[i];
+        outputLayer[i] = Activation(sum);
     }
 
     return outputLayer;
 }
 
+// Backward pass
 void NeuralNetwork::Backward(const std::vector<double>& target)
 {
-    std::vector<double> output_layer_error = std::vector<double>(outputSize);
+    std::vector<double> output_layer_error(outputSize);
 
-    // Calculation of outpu layer error
-    for (size_t i = 0; i < outputSize; i++)
+    for (size_t i = 0; i < outputSize; ++i)
     {
         output_layer_error[i] = outputLayer[i] - target[i];
     }
 
-    std::vector<double> hidden_layer_error = std::vector<double>(hiddenSize);
+    std::vector<double> hidden_layer_error(hiddenSize);
 
-    // Calculation of hidden layer error
     for (size_t i = 0; i < hiddenSize; ++i)
     {
         double error = 0.0;
-
-        // Calculate error for hidden neuron i
         for (size_t j = 0; j < outputSize; ++j)
         {
             error += output_layer_error[j] * weightsHiddenOutput[j][i];
         }
-
-        // Apply the derivative of the activation function for hidden layer
         hidden_layer_error[i] = error * ActivationDerivative(hiddenLayer[i]);
     }
 
-    // Calculation of the gradients
     for (size_t i = 0; i < outputSize; ++i)
     {
         for (size_t j = 0; j < hiddenSize; ++j)
@@ -220,48 +188,167 @@ void NeuralNetwork::Backward(const std::vector<double>& target)
         }
     }
 
-    // Calculation of the gradients
-    for (size_t i = 0; i < inputSize; ++i)
+    for (size_t i = 0; i < hiddenSize; ++i)
     {
-        for (size_t j = 0; j < hiddenSize; ++j)
+        for (size_t j = 0; j < inputSize; ++j)
         {
-            gradientsInputHidden[i][j] = hidden_layer_error[j] * inputLayer[i];
+            gradientsInputHidden[i][j] = hidden_layer_error[i] * inputLayer[j];
         }
     }
 
-    // Calculation of the gradients
     for (size_t i = 0; i < outputSize; ++i)
     {
         gradientsBiasesOutput[i] = output_layer_error[i];
     }
 
-    // Calculation of the gradients
     for (size_t i = 0; i < hiddenSize; ++i)
     {
         gradientsBiasesHidden[i] = hidden_layer_error[i];
     }
 }
 
+// Calculate loss (MSE)
 double NeuralNetwork::CalculateLoss(const std::vector<double>& predicted_output, const std::vector<double>& target_output)
 {
     double total_loss = 0.0;
-
-    for (size_t i = 0; i < outputSize; i++)
+    for (size_t i = 0; i < outputSize; ++i)
     {
-        total_loss += std::pow((predicted_output[i] - target_output[i]), 2);
+        total_loss += std::pow(predicted_output[i] - target_output[i], 2);
+    }
+    return total_loss / outputSize;
+}
+
+// Test the network
+void NeuralNetwork::Test(const std::vector<std::vector<double>>& inputs, const std::vector<std::vector<double>>& targets)
+{
+    double total_loss = 0.0;
+
+    for (size_t i = 0; i < inputs.size(); ++i)
+    {
+        std::vector<double> prediction = Forward(inputs[i]);
+        total_loss += CalculateLoss(prediction, targets[i]);
     }
 
-    total_loss /= static_cast<double>(outputSize);
-
-    return total_loss;
+    std::cout << "Test Loss: " << total_loss / inputs.size() << std::endl;
 }
-    
+
+// Save model
+void NeuralNetwork::SaveModel(const std::string& file_path)
+{
+    std::ofstream file(file_path, std::ios::binary);
+
+    if (!file.is_open())
+    {
+        std::cerr << "Error opening file for saving model!" << std::endl;
+        return;
+    }
+
+    file.write(reinterpret_cast<char*>(&inputSize), sizeof(inputSize));
+    file.write(reinterpret_cast<char*>(&hiddenSize), sizeof(hiddenSize));
+    file.write(reinterpret_cast<char*>(&outputSize), sizeof(outputSize));
+
+    for (const auto& row : weightsInputHidden)
+    {
+        file.write(reinterpret_cast<const char*>(row.data()), row.size() * sizeof(double));
+    }
+
+    for (const auto& row : weightsHiddenOutput)
+    {
+        file.write(reinterpret_cast<const char*>(row.data()), row.size() * sizeof(double));
+    }
+
+    file.write(reinterpret_cast<const char*>(biasesHidden.data()), biasesHidden.size() * sizeof(double));
+    file.write(reinterpret_cast<const char*>(biasesOutput.data()), biasesOutput.size() * sizeof(double));
+
+    file.close();
+}
+
+// Load model
+void NeuralNetwork::LoadModel(const std::string& file_path)
+{
+    std::ifstream file(file_path, std::ios::binary);
+
+    if (!file.is_open())
+    {
+        std::cerr << "Error opening file for loading model!" << std::endl;
+        return;
+    }
+
+    file.read(reinterpret_cast<char*>(&inputSize), sizeof(inputSize));
+    file.read(reinterpret_cast<char*>(&hiddenSize), sizeof(hiddenSize));
+    file.read(reinterpret_cast<char*>(&outputSize), sizeof(outputSize));
+
+    weightsInputHidden.resize(hiddenSize, std::vector<double>(inputSize));
+    weightsHiddenOutput.resize(outputSize, std::vector<double>(hiddenSize));
+    biasesHidden.resize(hiddenSize);
+    biasesOutput.resize(outputSize);
+
+    for (auto& row : weightsInputHidden)
+    {
+        file.read(reinterpret_cast<char*>(row.data()), row.size() * sizeof(double));
+    }
+
+    for (auto& row : weightsHiddenOutput)
+    {
+        file.read(reinterpret_cast<char*>(row.data()), row.size() * sizeof(double));
+    }
+
+    file.read(reinterpret_cast<char*>(biasesHidden.data()), biasesHidden.size() * sizeof(double));
+    file.read(reinterpret_cast<char*>(biasesOutput.data()), biasesOutput.size() * sizeof(double));
+
+    file.close();
+}
+
+// Activation function (Sigmoid)
 double NeuralNetwork::Activation(double x) const
 {
-    return 1 / (1 + std::exp(-x));
+    return 1.0 / (1.0 + std::exp(-x));
 }
 
+// Derivative of the activation function (Sigmoid)
 double NeuralNetwork::ActivationDerivative(double sigmoidOutput) const
 {
-    return sigmoidOutput * (1 - sigmoidOutput);
+    return sigmoidOutput * (1.0 - sigmoidOutput);
+}
+
+// Print network structure and weights
+void NeuralNetwork::PrintNetwork()
+{
+    std::cout << "Input Layer Size: " << inputSize << std::endl;
+    std::cout << "Hidden Layer Size: " << hiddenSize << std::endl;
+    std::cout << "Output Layer Size: " << outputSize << std::endl;
+
+    std::cout << "Weights (Input -> Hidden):" << std::endl;
+    for (const auto& row : weightsInputHidden)
+    {
+        for (double w : row)
+        {
+            std::cout << w << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "Weights (Hidden -> Output):" << std::endl;
+    for (const auto& row : weightsHiddenOutput)
+    {
+        for (double w : row)
+        {
+            std::cout << w << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "Biases (Hidden): ";
+    for (double b : biasesHidden)
+    {
+        std::cout << b << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Biases (Output): ";
+    for (double b : biasesOutput)
+    {
+        std::cout << b << " ";
+    }
+    std::cout << std::endl;
 }
