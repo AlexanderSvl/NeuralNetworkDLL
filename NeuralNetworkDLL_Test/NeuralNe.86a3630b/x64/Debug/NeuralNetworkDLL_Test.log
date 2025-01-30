@@ -1,0 +1,58 @@
+﻿  NeuralNetworkDLL_Test.cpp
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(66,38): warning C4251: 'NeuralNetwork::weightsInputHidden': 'std::vector<std::vector<double,std::allocator<double>>,std::allocator<std::vector<double,std::allocator<double>>>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<std::vector<double,std::allocator<double>>,std::allocator<std::vector<double,std::allocator<double>>>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(67,38): warning C4251: 'NeuralNetwork::weightsHiddenOutput': 'std::vector<std::vector<double,std::allocator<double>>,std::allocator<std::vector<double,std::allocator<double>>>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<std::vector<double,std::allocator<double>>,std::allocator<std::vector<double,std::allocator<double>>>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(68,25): warning C4251: 'NeuralNetwork::biasesHidden': 'std::vector<double,std::allocator<double>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<double,std::allocator<double>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(69,25): warning C4251: 'NeuralNetwork::biasesOutput': 'std::vector<double,std::allocator<double>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<double,std::allocator<double>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(72,25): warning C4251: 'NeuralNetwork::inputLayer': 'std::vector<double,std::allocator<double>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<double,std::allocator<double>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(73,25): warning C4251: 'NeuralNetwork::hiddenLayer': 'std::vector<double,std::allocator<double>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<double,std::allocator<double>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(74,25): warning C4251: 'NeuralNetwork::outputLayer': 'std::vector<double,std::allocator<double>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<double,std::allocator<double>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(77,38): warning C4251: 'NeuralNetwork::gradientsInputHidden': 'std::vector<std::vector<double,std::allocator<double>>,std::allocator<std::vector<double,std::allocator<double>>>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<std::vector<double,std::allocator<double>>,std::allocator<std::vector<double,std::allocator<double>>>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(78,38): warning C4251: 'NeuralNetwork::gradientsHiddenOutput': 'std::vector<std::vector<double,std::allocator<double>>,std::allocator<std::vector<double,std::allocator<double>>>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<std::vector<double,std::allocator<double>>,std::allocator<std::vector<double,std::allocator<double>>>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(79,25): warning C4251: 'NeuralNetwork::gradientsBiasesHidden': 'std::vector<double,std::allocator<double>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<double,std::allocator<double>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL\NeuralNetwork.h(80,25): warning C4251: 'NeuralNetwork::gradientsBiasesOutput': 'std::vector<double,std::allocator<double>>' needs to have dll-interface to be used by clients of 'NeuralNetwork'
+  (compiling source file 'NeuralNetworkDLL_Test.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\vector(429,7):
+      see declaration of 'std::vector<double,std::allocator<double>>'
+  
+C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL_Test\NeuralNetworkDLL_Test.cpp(9,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  NeuralNetworkDLL_Test.vcxproj -> C:\Users\Alex\Desktop\Coding\C++\NeuralNetwokDLL\NeuralNetworkDLL_Test\x64\Debug\NeuralNetworkDLL_Test.exe

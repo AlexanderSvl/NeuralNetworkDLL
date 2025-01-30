@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Alex\\Desktop\\Coding\\C\u002B\u002B\\NeuralNetwokDLL\\NeuralNetworkDLL_Test\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{86A3630B-6927-401D-9EA5-E4513793BE0A}|NeuralNetworkDLL_Test.vcxproj|C:\\Users\\Alex\\Desktop\\Coding\\C\u002B\u002B\\NeuralNetwokDLL\\NeuralNetworkDLL_Test\\NeuralNetworkDLL_Test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{86A3630B-6927-401D-9EA5-E4513793BE0A}|NeuralNetworkDLL_Test.vcxproj|solutionrelative:NeuralNetworkDLL_Test.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NeuralNetworkDLL_Test.cpp",
+              "DocumentMoniker": "C:\\Users\\Alex\\Desktop\\Coding\\C\u002B\u002B\\NeuralNetwokDLL\\NeuralNetworkDLL_Test\\NeuralNetworkDLL_Test.cpp",
+              "RelativeDocumentMoniker": "NeuralNetworkDLL_Test.cpp",
+              "ToolTip": "C:\\Users\\Alex\\Desktop\\Coding\\C\u002B\u002B\\NeuralNetwokDLL\\NeuralNetworkDLL_Test\\NeuralNetworkDLL_Test.cpp",
+              "RelativeToolTip": "NeuralNetworkDLL_Test.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-01-30T21:30:38.196Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
